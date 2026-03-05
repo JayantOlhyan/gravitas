@@ -12,7 +12,7 @@ export default function SpaceWeatherRadar() {
 
     return (
         <GlassCard className="flex flex-col overflow-hidden border-none shadow-none md:border-solid md:shadow-[0_8px_32px_rgba(0,0,0,0.4)] md:min-h-[180px]">
-            <h2 className="text-white font-bold text-[13px] uppercase tracking-wider mb-2">Space Weather Monitor</h2>
+            <h2 className="text-white font-bold text-[13px] uppercase tracking-wider mb-2 text-center w-full truncate">Space Weather Monitor</h2>
 
             <div className="flex items-center justify-between mb-3 bg-[var(--bg-card-2)] p-2 rounded-lg border border-[var(--border-subtle)]">
                 <div className="flex items-center gap-1.5">

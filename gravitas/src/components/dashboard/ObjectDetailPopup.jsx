@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { X, Plus, Check } from 'lucide-react';
 import GlassCard from '../shared/GlassCard';
 import useAppStore from '../../store/useAppStore';
@@ -12,6 +12,7 @@ export default function ObjectDetailPopup() {
     const isOpen = useAppStore(state => state.detailPopupOpen);
     const setDetailPopupOpen = useAppStore(state => state.setDetailPopupOpen);
     const [isMonitoring, setIsMonitoring] = useState(false);
+    const hasInitialized = useRef(false);
 
     // Reset indicator when selection changes
     useEffect(() => {
@@ -21,12 +22,13 @@ export default function ObjectDetailPopup() {
     const { data: topRisks } = useTopRiskDebris();
 
     useEffect(() => {
-        // Select highest risk by default if not set
-        if (!selectedObject && topRisks && topRisks.length > 0 && !isOpen) {
+        // Select highest risk by default if not set, but only once on initial load
+        if (!hasInitialized.current && !selectedObject && topRisks && topRisks.length > 0) {
             setSelectedObject(topRisks[0]);
             setDetailPopupOpen(true);
+            hasInitialized.current = true;
         }
-    }, [selectedObject, topRisks, isOpen, setSelectedObject, setDetailPopupOpen]);
+    }, [selectedObject, topRisks, setSelectedObject, setDetailPopupOpen]);
 
     if (!isOpen && !selectedObject) return null;
 
@@ -48,11 +50,15 @@ export default function ObjectDetailPopup() {
 
     return (
         <GlassCard isAlert={isCritical} className="relative flex flex-col gap-4 overflow-hidden border-none shadow-none md:border-solid md:shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
-            <button onClick={handleClose} className="absolute top-4 right-4 text-[var(--text-muted-light)] hover:text-white transition-colors z-10">
-                <X className="w-4 h-4" />
+            <button
+                onClick={(e) => { e.stopPropagation(); handleClose(); }}
+                className="absolute top-4 right-4 text-[var(--text-muted-light)] hover:text-white transition-colors z-[100] cursor-pointer"
+                title="Close"
+            >
+                <X className="w-5 h-5 pointer-events-auto" />
             </button>
 
-            <div className="border-b border-[var(--border-subtle)] pb-3 pr-6">
+            <div className="border-b border-[var(--border-subtle)] pb-3 pr-10">
                 <h2 className="text-white font-bold text-[16px] leading-tight truncate">
                     {selectedObject.name || 'UNKNOWN DEBRIS'}
                     <span className="text-[var(--text-muted-light)] font-mono text-xs ml-2 block sm:inline mt-1 sm:mt-0">· {selectedObject.id}</span>
