@@ -10,15 +10,16 @@ import { useNavigate } from 'react-router-dom';
 
 export default function DebrisPage() {
     const { data: debrisData, isLoading } = useDebrisList(5000);
-    const [search, setSearch] = useState('');
+    const searchQuery = useAppStore(state => state.searchQuery);
+    const setSearchQuery = useAppStore(state => state.setSearchQuery);
     const setSelectedObject = useAppStore(state => state.setSelectedObject);
     const setDetailPopupOpen = useAppStore(state => state.setDetailPopupOpen);
     const navigate = useNavigate();
 
     const filteredData = React.useMemo(() => {
         if (!debrisData) return [];
-        return debrisData.filter(d => (d.name || '').toLowerCase().includes(search.toLowerCase()) || (d.id || '').includes(search));
-    }, [debrisData, search]);
+        return debrisData.filter(d => (d.name || '').toLowerCase().includes(searchQuery.toLowerCase()) || (d.id || '').includes(searchQuery));
+    }, [debrisData, searchQuery]);
 
     const handleView = (obj) => {
         setSelectedObject(obj);
@@ -55,7 +56,7 @@ export default function DebrisPage() {
                         {filteredData.length.toLocaleString()} OBJECTS
                     </span>
                 </div>
-                <SearchBar value={search} onChange={setSearch} placeholder="Search ID or Name..." className="w-full md:w-[300px]" />
+                <SearchBar value={searchQuery} onChange={setSearchQuery} placeholder="Search ID or Name..." className="w-full md:w-[300px]" />
             </div>
 
             <GlassCard className="flex-1 flex flex-col overflow-hidden p-0 border-none shadow-none md:border-solid md:shadow-[0_8px_32px_rgba(0,0,0,0.4)]">

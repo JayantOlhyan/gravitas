@@ -4,8 +4,10 @@ import GlassCard from '../shared/GlassCard';
 import useAppStore from '../../store/useAppStore';
 import { useTopRiskDebris } from '../../hooks/useDebrisData';
 import { useHazardousNeo } from '../../hooks/useNEOData';
+import { useNavigate } from 'react-router-dom';
 
 export default function CollisionRiskPanel() {
+    const navigate = useNavigate();
     const { data: topRisks, isLoading } = useTopRiskDebris();
     const { data: hazardousNeos } = useHazardousNeo();
     const setSelectedObject = useAppStore(state => state.setSelectedObject);
@@ -75,7 +77,7 @@ export default function CollisionRiskPanel() {
                 </div>
             </div>
 
-            <button className="w-full py-2.5 bg-transparent border border-[var(--accent-orange)] text-[var(--accent-orange)] rounded font-bold text-[11px] tracking-widest uppercase hover:bg-[var(--accent-orange)] hover:text-white transition-colors duration-300">
+            <button onClick={() => navigate('/debris')} className="w-full py-2.5 bg-transparent border border-[var(--accent-orange)] text-[var(--accent-orange)] rounded font-bold text-[11px] tracking-widest uppercase hover:bg-[var(--accent-orange)] hover:text-white transition-colors duration-300">
                 View All Alerts
             </button>
 

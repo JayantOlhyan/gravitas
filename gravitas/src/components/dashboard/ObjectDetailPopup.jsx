@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { X, Plus } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { X, Plus, Check } from 'lucide-react';
 import GlassCard from '../shared/GlassCard';
 import useAppStore from '../../store/useAppStore';
 import RiskBadge from '../shared/RiskBadge';
@@ -11,6 +11,12 @@ export default function ObjectDetailPopup() {
     const setSelectedObject = useAppStore(state => state.setSelectedObject);
     const isOpen = useAppStore(state => state.detailPopupOpen);
     const setDetailPopupOpen = useAppStore(state => state.setDetailPopupOpen);
+    const [isMonitoring, setIsMonitoring] = useState(false);
+
+    // Reset indicator when selection changes
+    useEffect(() => {
+        setIsMonitoring(false);
+    }, [selectedObject?.id]);
 
     const { data: topRisks } = useTopRiskDebris();
 
@@ -92,8 +98,11 @@ export default function ObjectDetailPopup() {
                         {isCritical ? 'Active Threat' : 'Monitoring'}
                     </span>
                 </div>
-                <button className="text-[var(--accent-orange)] hover:text-white hover:bg-[var(--accent-orange)] border border-[var(--accent-orange)] w-7 h-7 rounded-full flex items-center justify-center transition-colors">
-                    <Plus className="w-3 h-3" />
+                <button
+                    onClick={() => setIsMonitoring(!isMonitoring)}
+                    className={`border w-7 h-7 rounded-full flex items-center justify-center transition-colors ${isMonitoring ? 'bg-[var(--accent-green)] text-[var(--bg-primary)] border-[var(--accent-green)]' : 'text-[var(--accent-orange)] hover:text-white hover:bg-[var(--accent-orange)] border-[var(--accent-orange)]'}`}
+                >
+                    {isMonitoring ? <Check className="w-4 h-4" /> : <Plus className="w-3 h-3" />}
                 </button>
             </div>
         </GlassCard>

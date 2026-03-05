@@ -51,23 +51,26 @@ export default function Navbar() {
 
                 {/* RIGHT ZONE: Icons */}
                 <div className="hidden md:flex items-center space-x-6 w-[250px] justify-end">
-                    <button className="text-[var(--text-muted-light)] hover:text-white transition-colors">
+                    <button onClick={() => navigate('/debris')} className="text-[var(--text-muted-light)] hover:text-white transition-colors">
                         <Search className="h-5 w-5" />
                     </button>
 
-                    <button className="relative text-[var(--text-muted-light)] hover:text-white transition-colors">
+                    <button
+                        onClick={() => useAppStore.getState().setHasUnreadAlerts(!hasUnreadAlerts)}
+                        className="relative text-[var(--text-muted-light)] hover:text-white transition-colors"
+                    >
                         <Bell className="h-5 w-5" />
                         {hasUnreadAlerts && (
                             <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-[var(--accent-red)] ring-2 ring-[var(--bg-primary)]"></span>
                         )}
                     </button>
 
-                    <button className="text-[var(--text-muted-light)] hover:text-white transition-colors">
+                    <button className="text-[var(--text-muted-light)] hover:text-white transition-colors cursor-not-allowed opacity-50">
                         <Settings className="h-5 w-5" />
                     </button>
 
-                    <div className="h-9 w-9 rounded-full bg-[var(--bg-card-2)] border border-[var(--border-subtle)] overflow-hidden flex items-center justify-center">
-                        <span className="text-xs font-bold text-[var(--accent-cyan)]">JO</span>
+                    <div className="h-9 w-9 rounded-full bg-[rgba(0,212,255,0.1)] border border-[rgba(0,212,255,0.3)] overflow-hidden flex items-center justify-center cursor-pointer hover:bg-[rgba(0,212,255,0.2)] transition-colors shadow-[0_0_10px_rgba(0,212,255,0.1)]">
+                        <span className="text-xs font-bold text-[var(--accent-cyan)] select-none">JO</span>
                     </div>
                 </div>
 
