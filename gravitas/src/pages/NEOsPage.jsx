@@ -3,9 +3,14 @@ import GlassCard from '../components/shared/GlassCard';
 import { useNeoFeed } from '../hooks/useNEOData';
 import RiskBadge from '../components/shared/RiskBadge';
 import LoadingSpinner from '../components/shared/LoadingSpinner';
+import useAppStore from '../store/useAppStore';
+import { useNavigate } from 'react-router-dom';
 
 export default function NEOsPage() {
     const { data: feedData, isLoading } = useNeoFeed();
+    const setSelectedObject = useAppStore(state => state.setSelectedObject);
+    const setDetailPopupOpen = useAppStore(state => state.setDetailPopupOpen);
+    const navigate = useNavigate();
 
     let approaches = [];
     if (feedData && feedData.near_earth_objects) {
@@ -19,6 +24,22 @@ export default function NEOsPage() {
 
     const hazardousCount = approaches.filter(a => a.is_potentially_hazardous_asteroid).length;
     const nextApproach = approaches.length > 0 ? approaches[0] : null;
+
+    const handleView = (neo) => {
+        const approach = neo.close_approach_data[0];
+        const adaptedObj = {
+            id: neo.id,
+            name: neo.name,
+            alt: approach.miss_distance.kilometers || (parseFloat(approach.miss_distance.astronomical) * 149597870.7).toString(),
+            velocity: approach.relative_velocity.kilometers_per_second,
+            inclination: 0,
+            orbitType: 'NEO',
+            riskScore: neo.is_potentially_hazardous_asteroid ? '8.5' : '2.1'
+        };
+        setSelectedObject(adaptedObj);
+        setDetailPopupOpen(true);
+        navigate('/');
+    };
 
     return (
         <div className="flex-1 w-full h-[calc(100vh-[64px])] overflow-y-auto p-4 md:p-6 gap-6 relative z-10 custom-scrollbar">
@@ -86,7 +107,10 @@ export default function NEOsPage() {
                                 </div>
                             </div>
 
-                            <button className="w-full mt-2 md:mt-2 py-2 md:py-2.5 border border-[var(--border-subtle)] text-[9px] md:text-[10px] text-white font-bold uppercase tracking-widest rounded bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.1)] transition-colors z-10">
+                            <button
+                                onClick={() => handleView(neo)}
+                                className="w-full mt-2 md:mt-2 py-2 md:py-2.5 border border-[var(--border-subtle)] text-[9px] md:text-[10px] text-white font-bold uppercase tracking-widest rounded bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.1)] transition-colors z-10"
+                            >
                                 View Details
                             </button>
                         </GlassCard>

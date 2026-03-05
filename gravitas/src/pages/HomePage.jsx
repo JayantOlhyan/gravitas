@@ -21,13 +21,13 @@ export default function HomePage() {
     };
 
     return (
-        <div className="flex-1 w-full flex flex-col md:flex-row overflow-hidden relative">
-            <div className="w-full md:w-[280px] flex-shrink-0 h-auto md:h-full overflow-y-auto p-4 md:border-r border-[var(--border-subtle)] z-10 bg-[var(--bg-primary)] md:bg-[rgba(4,9,26,0.5)] custom-scrollbar mt-4 md:mt-0">
+        <div className="flex-1 w-full flex flex-col lg:flex-row overflow-y-auto overflow-x-hidden relative custom-scrollbar">
+            <div className="w-full lg:w-[280px] flex-shrink-0 h-auto lg:h-full overflow-y-visible lg:overflow-y-auto p-4 lg:border-r border-[var(--border-subtle)] z-10 bg-[var(--bg-primary)] lg:bg-[rgba(4,9,26,0.5)] custom-scrollbar mt-4 lg:mt-0">
                 <CollisionRiskPanel />
             </div>
 
-            <div className="flex-1 flex flex-col relative h-[100vh] md:h-full">
-                <div className="flex-1 relative min-h-[40vh] md:min-h-0">
+            <div className="flex-1 flex flex-col relative min-h-[80vh] lg:min-h-0 lg:h-full">
+                <div className="flex-1 relative min-h-[40vh] lg:min-h-0">
                     <EarthGlobe />
 
                     <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center space-y-4 md:space-y-6 z-20 pointer-events-none pb-2">
@@ -37,19 +37,19 @@ export default function HomePage() {
                         >
                             EXPLORE
                         </button>
-                        <div className="pointer-events-auto w-full max-w-[300px] md:max-w-none" onKeyDown={handleSearch}>
+                        <div className="pointer-events-auto w-full max-w-[300px] lg:max-w-none" onKeyDown={handleSearch}>
                             <SearchBar value={searchQuery} onChange={setSearchQuery} />
                         </div>
                     </div>
                 </div>
 
-                <div className="h-auto md:h-[260px] flex-shrink-0 grid grid-cols-1 md:grid-cols-2 gap-4 p-4 z-10 bg-[var(--bg-primary)] md:bg-[rgba(4,9,26,0.6)] md:backdrop-blur-md border-t border-[var(--border-subtle)]">
+                <div className="h-auto lg:h-[260px] flex-shrink-0 grid grid-cols-1 md:grid-cols-2 gap-4 p-4 z-10 bg-[var(--bg-primary)] lg:bg-[rgba(4,9,26,0.6)] lg:backdrop-blur-md border-t border-[var(--border-subtle)]">
                     <CloseApproachEvents />
                     <DebrisByOrbitChart />
                 </div>
             </div>
 
-            <div className="w-full md:w-[320px] flex-shrink-0 h-auto md:h-full overflow-y-auto p-4 md:border-l border-[var(--border-subtle)] z-10 bg-[var(--bg-primary)] md:bg-[rgba(4,9,26,0.5)] custom-scrollbar space-y-4">
+            <div className="w-full lg:w-[320px] flex-shrink-0 h-auto lg:h-full overflow-y-visible lg:overflow-y-auto p-4 lg:border-l border-[var(--border-subtle)] z-10 bg-[var(--bg-primary)] lg:bg-[rgba(4,9,26,0.5)] custom-scrollbar space-y-4">
                 <ObjectDetailPopup />
                 <SpaceWeatherRadar />
             </div>

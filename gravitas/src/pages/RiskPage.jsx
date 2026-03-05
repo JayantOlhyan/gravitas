@@ -10,7 +10,7 @@ export default function RiskPage() {
     const [start, setStart] = useState(new Date().toISOString().split('T')[0]);
     const [end, setEnd] = useState(new Date(Date.now() + 15 * 86400000).toISOString().split('T')[0]);
 
-    const { mutate, data, isPending } = useMissionOptimizer();
+    const { mutate, data, isPending, isError, error } = useMissionOptimizer();
 
     const handleCompute = () => {
         mutate({ alt, inc, start, end });
@@ -66,7 +66,17 @@ export default function RiskPage() {
                             <h2 className="text-white font-bold text-[14px] uppercase tracking-wider border-b border-[var(--border-subtle)] pb-2 mb-4">Results & Recommendations</h2>
 
                             {isPending ? (
-                                <LoadingSpinner text="Running 10,000 simulations..." />
+                                <div className="flex-1 flex flex-col items-center justify-center gap-4 mt-8 md:mt-16">
+                                    <LoadingSpinner text="Running orbital collision simulations..." />
+                                    <div className="text-[10px] text-[var(--accent-cyan)] font-mono animate-pulse uppercase tracking-widest text-center max-w-xs mt-2">
+                                        Cross-referencing trajectories against solar weather...
+                                    </div>
+                                </div>
+                            ) : isError ? (
+                                <div className="flex-1 flex flex-col items-center justify-center text-center p-6 text-[var(--text-muted)] mt-8 md:mt-16">
+                                    <span className="text-[var(--accent-red)] font-bold text-sm uppercase tracking-widest mb-2">Simulation Failed</span>
+                                    <span className="text-[11px] leading-relaxed max-w-md">NASCOM connection timed out or rejected. Please try again.</span>
+                                </div>
                             ) : !data ? (
                                 <div className="flex-1 flex items-center justify-center text-[var(--text-muted)] text-sm">Awaiting telemetry inputs...</div>
                             ) : (

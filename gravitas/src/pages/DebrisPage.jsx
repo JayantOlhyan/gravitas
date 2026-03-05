@@ -39,7 +39,11 @@ export default function DebrisPage() {
                 <div className="hidden md:block w-[100px] text-[12px] text-right text-[var(--text-secondary)] font-mono pr-4">{parseFloat(obj.inclination).toFixed(1)}</div>
                 <div className="w-[60px] md:w-[80px] flex justify-center"><RiskBadge score={obj.riskScore || '2.0'} /></div>
                 <div className="w-[40px] md:w-[60px] flex justify-end">
-                    <button onClick={() => handleView(obj)} className="text-[var(--text-muted-light)] hover:text-[var(--accent-orange)] transition-colors p-2">
+                    <button
+                        onClick={(e) => { e.stopPropagation(); handleView(obj); }}
+                        className="text-[var(--text-muted-light)] hover:text-[var(--accent-orange)] transition-colors p-2 cursor-pointer relative z-50 pointer-events-auto"
+                        title="View on tracking map"
+                    >
                         <Eye className="w-4 h-4 md:w-5 md:h-5" />
                     </button>
                 </div>

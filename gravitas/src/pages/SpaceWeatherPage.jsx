@@ -72,14 +72,14 @@ export default function SpaceWeatherPage() {
                             <LoadingSpinner text="Connecting to NASCOM..." />
                         ) : (
                             <div className="flex flex-col gap-3 overflow-y-auto min-h-[150px] custom-scrollbar pr-2 pb-2">
-                                {currentEvents?.map((evt, idx) => (
+                                {Array.isArray(currentEvents) && currentEvents.map((evt, idx) => (
                                     <div key={idx} className="flex flex-col p-3 bg-[rgba(10,22,40,0.5)] border-l-2 border-[var(--accent-blue-light)] rounded hover:bg-[rgba(10,22,40,0.8)] transition-colors">
                                         <span className="text-[10px] md:text-[11px] font-bold text-[var(--accent-cyan)] mb-1 uppercase tracking-widest leading-tight">{evt.messageType}</span>
                                         <span className="text-white text-[11px] md:text-xs leading-relaxed line-clamp-3 md:line-clamp-4">{evt.messageBody.split('##')[0] || evt.messageBody}</span>
                                         <span className="text-[8px] md:text-[9px] text-[var(--text-muted)] mt-2 italic whitespace-nowrap overflow-hidden text-ellipsis">{new Date(evt.messageIssueTime).toLocaleString()}</span>
                                     </div>
                                 ))}
-                                {(!currentEvents || currentEvents.length === 0) && (
+                                {(!currentEvents || !Array.isArray(currentEvents) || currentEvents.length === 0) && (
                                     <div className="text-[var(--text-muted)] text-[11px] md:text-xs text-center p-6 italic border border-dashed border-[var(--border-subtle)] rounded my-4 mx-2">No recent space weather anomalies detected.</div>
                                 )}
                             </div>
