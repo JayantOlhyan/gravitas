@@ -7,8 +7,8 @@ export default function SpaceWeatherRadar() {
     const { data: currentEvents } = useCurrentWeather();
     const { data: flares } = useSolarFlares();
 
-    const isFlareActive = flares && flares.length > 0;
-    const isCmeActive = currentEvents && currentEvents.some(e => e.messageType.includes('CME'));
+    const isFlareActive = Array.isArray(flares) && flares.length > 0;
+    const isCmeActive = Array.isArray(currentEvents) && currentEvents.some(e => e?.messageType?.includes('CME'));
 
     return (
         <GlassCard className="flex flex-col overflow-hidden border-none shadow-none md:border-solid md:shadow-[0_8px_32px_rgba(0,0,0,0.4)] md:min-h-[180px]">

@@ -7,7 +7,7 @@ export default function DebrisByOrbitChart() {
     const { data: debrisData } = useDebrisList(2000);
 
     const chartData = useMemo(() => {
-        if (!debrisData) return [];
+        if (!debrisData || !Array.isArray(debrisData)) return [];
 
         const counts = { LEO: 0, MEO: 0, GEO: 0, HEO: 0 };
         debrisData.forEach(d => {

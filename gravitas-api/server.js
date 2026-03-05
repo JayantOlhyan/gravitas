@@ -19,7 +19,7 @@ app.use(morgan('dev'));
 // Rate limiting
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 100, // max 100 requests per 15 minutes per IP
+    max: process.env.NODE_ENV === 'development' ? 5000 : 100, // max 5000 requests per 15 mins locally
     standardHeaders: true,
     legacyHeaders: false,
 });

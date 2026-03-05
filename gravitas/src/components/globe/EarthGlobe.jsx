@@ -55,7 +55,7 @@ export default function EarthGlobe() {
     const selectedObject = useAppStore(state => state.selectedObject);
 
     const topRiskData = useMemo(() => {
-        if (!debrisData) return [];
+        if (!debrisData || !Array.isArray(debrisData)) return [];
         const sorted = [...debrisData].sort((a, b) => (b.velocity || 0) - (a.velocity || 0));
         return sorted.slice(0, 50);
     }, [debrisData]);
@@ -72,7 +72,7 @@ export default function EarthGlobe() {
                     <EarthSphere />
                 </Suspense>
 
-                {debrisData && <DebrisMarker debrisData={debrisData} />}
+                {Array.isArray(debrisData) && <DebrisMarker debrisData={debrisData} />}
 
                 {topRiskData.map(obj => (
                     <OrbitPath key={`path-${obj.id}`} debrisObj={obj} isSelected={selectedObject?.id === obj.id} />
