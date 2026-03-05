@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+:root {
+  --bg-primary: #04091A;
+  --bg-card: #0A1628;
+  --bg-card-2: #0D1F3C;
+  --bg-card-3: #111C35;
+  --accent-orange: #FF6B2B;
+  --accent-orange-dark: #CC4A0E;
+  --accent-cyan: #00D4FF;
+  --accent-blue: #1A6EBD;
+  --accent-blue-light: #3B9EE8;
+  --accent-green: #00E676;
+  --accent-yellow: #FFD600;
+  --accent-red: #FF3D00;
+  --text-primary: #FFFFFF;
+  --text-secondary: #E8EDF5;
+  --text-muted: #7A8FAD;
+  --text-muted-light: #A8BACE;
+  --border-subtle: #1E3A5F;
+  --glow-orange: rgba(255,107,43,0.3);
+  --glow-cyan: rgba(0,212,255,0.2);
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', Calibri, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.glass-panel {
+  background: rgba(10, 22, 40, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(30, 58, 95, 0.6);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.glass-panel-alert {
+  background: rgba(10, 22, 40, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 107, 43, 0.5);
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(255, 107, 43, 0.2);
+}
