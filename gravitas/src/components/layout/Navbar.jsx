@@ -22,9 +22,11 @@ export default function Navbar() {
 
                 {/* LEFT ZONE: Logo */}
                 <div className="flex items-center space-x-3 w-[250px]">
-                    <Orbit className="h-6 w-6 text-[var(--accent-cyan)] stroke-[2.5]" />
-                    <Link to="/" className="text-xl font-['Arial_Black'] text-[var(--accent-orange)] tracking-wider uppercase">
-                        GRAVITAS
+                    <Link to="/" className="flex items-center space-x-3">
+                        <img src="/logo.svg" alt="GRAVITAS Logo" className="h-8 w-8 object-contain" />
+                        <span className="text-xl font-['Arial_Black'] text-[var(--accent-orange)] tracking-wider uppercase">
+                            GRAVITAS
+                        </span>
                     </Link>
                 </div>
 
@@ -37,8 +39,8 @@ export default function Navbar() {
                                 key={tab.name}
                                 to={tab.path}
                                 className={`px-[20px] py-[8px] text-[14px] font-medium transition-colors rounded-full ${isActive
-                                        ? 'bg-[var(--accent-orange)] text-white'
-                                        : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+                                    ? 'bg-[var(--accent-orange)] text-white'
+                                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                                     }`}
                             >
                                 {tab.name}
@@ -81,10 +83,10 @@ export default function Navbar() {
             {mobileMenuOpen && (
                 <div className="fixed inset-0 z-[60] flex flex-col bg-[var(--bg-primary)] px-6 py-6 md:hidden">
                     <div className="flex justify-between items-center mb-8">
-                        <div className="flex items-center space-x-3">
-                            <Orbit className="h-6 w-6 text-[var(--accent-cyan)]" />
+                        <Link to="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center space-x-3">
+                            <img src="/logo.svg" alt="GRAVITAS Logo" className="h-8 w-8 object-contain" />
                             <span className="text-xl font-black text-[var(--accent-orange)] uppercase">GRAVITAS</span>
-                        </div>
+                        </Link>
                         <button onClick={() => setMobileMenuOpen(false)}>
                             <X className="h-6 w-6 text-white" />
                         </button>

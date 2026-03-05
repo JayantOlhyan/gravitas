@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/JayantOlhyan/gravitas/main/gravitas/public/vite.svg" alt="GRAVITAS Logo" width="100"/>
+  <img src="https://raw.githubusercontent.com/JayantOlhyan/gravitas/main/gravitas/public/logo.svg" alt="GRAVITAS Logo" width="100"/>
   <h1>GRAVITAS</h1>
   <p><strong>Next-Generation Space Hazard Intelligence Platform</strong></p>
   
