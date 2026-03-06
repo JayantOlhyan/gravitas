@@ -5,6 +5,7 @@ import LoadingSpinner from './components/shared/LoadingSpinner';
 
 import ErrorBoundary from './components/shared/ErrorBoundary';
 import ProfileModal from './components/dashboard/ProfileModal';
+import SettingsModal from './components/dashboard/SettingsModal';
 
 const HomePage = lazy(() => import('./pages/HomePage'));
 const DebrisPage = lazy(() => import('./pages/DebrisPage'));
@@ -27,6 +28,7 @@ export default function App() {
             </Route>
           </Routes>
           <ProfileModal />
+          <SettingsModal />
         </Suspense>
       </ErrorBoundary>
     </BrowserRouter>

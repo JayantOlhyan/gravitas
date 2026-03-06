@@ -13,6 +13,7 @@ export default function HomePage() {
     const navigate = useNavigate();
     const searchQuery = useAppStore(state => state.searchQuery);
     const setSearchQuery = useAppStore(state => state.setSearchQuery);
+    const { layout } = useAppStore(state => state.appSettings);
 
     const handleSearch = (e) => {
         if (e.key === 'Enter' && searchQuery.trim() !== '') {
@@ -22,8 +23,8 @@ export default function HomePage() {
 
     return (
         <div className="flex-1 w-full flex flex-col lg:flex-row overflow-y-auto overflow-x-hidden relative custom-scrollbar">
-            <div className="w-full lg:w-[280px] flex-shrink-0 h-auto lg:h-full overflow-y-visible lg:overflow-y-auto p-4 lg:border-r border-[var(--border-subtle)] z-10 bg-[var(--bg-primary)] lg:bg-[rgba(4,9,26,0.5)] custom-scrollbar mt-4 lg:mt-0">
-                <CollisionRiskPanel />
+            <div className={`w-full lg:w-[280px] flex-shrink-0 h-auto lg:h-full overflow-y-visible lg:overflow-y-auto p-4 lg:border-r border-[var(--border-subtle)] z-10 bg-[var(--bg-primary)] lg:bg-[rgba(4,9,26,0.5)] custom-scrollbar mt-4 lg:mt-0 ${!layout.panels.collisionRisk ? 'hidden lg:hidden' : ''}`}>
+                {layout.panels.collisionRisk && <CollisionRiskPanel />}
             </div>
 
             <div className="flex-1 flex flex-col relative min-h-[80vh] lg:min-h-0 lg:h-full">
@@ -43,15 +44,17 @@ export default function HomePage() {
                     </div>
                 </div>
 
-                <div className="h-auto lg:h-[260px] flex-shrink-0 grid grid-cols-1 md:grid-cols-2 gap-4 p-4 z-10 bg-[var(--bg-primary)] lg:bg-[rgba(4,9,26,0.6)] lg:backdrop-blur-md border-t border-[var(--border-subtle)]">
-                    <CloseApproachEvents />
-                    <DebrisByOrbitChart />
-                </div>
+                {(layout.panels.closeApproaches || layout.panels.orbitChart) && (
+                    <div className="h-auto lg:h-[260px] flex-shrink-0 grid grid-cols-1 md:grid-cols-2 gap-4 p-4 z-10 bg-[var(--bg-primary)] lg:bg-[rgba(4,9,26,0.6)] lg:backdrop-blur-md border-t border-[var(--border-subtle)]">
+                        {layout.panels.closeApproaches && <CloseApproachEvents />}
+                        {layout.panels.orbitChart && <DebrisByOrbitChart />}
+                    </div>
+                )}
             </div>
 
-            <div className="w-full lg:w-[320px] flex-shrink-0 h-auto lg:h-full overflow-y-visible lg:overflow-y-auto p-4 lg:border-l border-[var(--border-subtle)] z-10 bg-[var(--bg-primary)] lg:bg-[rgba(4,9,26,0.5)] custom-scrollbar space-y-4">
+            <div className={`w-full lg:w-[320px] flex-shrink-0 h-auto lg:h-full overflow-y-visible lg:overflow-y-auto p-4 lg:border-l border-[var(--border-subtle)] z-10 bg-[var(--bg-primary)] lg:bg-[rgba(4,9,26,0.5)] custom-scrollbar space-y-4 ${(!layout.panels.spaceWeather) ? 'hidden lg:hidden' : ''}`}>
                 <ObjectDetailPopup />
-                <SpaceWeatherRadar />
+                {layout.panels.spaceWeather && <SpaceWeatherRadar />}
             </div>
         </div>
     );

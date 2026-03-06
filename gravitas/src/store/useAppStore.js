@@ -48,6 +48,93 @@ const useAppStore = create((set, get) => ({
     setUserProfile: (profile) => set((state) => ({
         userProfile: { ...state.userProfile, ...profile }
     })),
+
+    // App Settings
+    settingsModalOpen: false,
+    setSettingsModalOpen: (v) => set({ settingsModalOpen: v }),
+    appSettings: {
+        display: {
+            theme: 'dark', // dark, light, system
+            accentColor: 'cyan', // orange, cyan, blue, green
+            globeQuality: 'high', // ultra, high, medium, low
+            reduceMotion: false
+        },
+        globe: {
+            autoRotation: true,
+            rotationSpeed: 1.0,
+            showOrbitalPaths: true,
+            maxOrbitsRendered: 500, // 100, 500, 1000, 'all'
+            orbitColorMode: 'risk', // risk, type, agency
+            showDebrisMarkers: true,
+            showNeoTrajectories: true,
+            atmosphereGlow: true,
+            cloudLayer: true
+        },
+        alerts: {
+            riskThreshold: 6, // 1-10
+            neoWarning: true,
+            neoDistanceThreshold: 0.05, // AU
+            solarFlareAlerts: 'M-class', // off, M-class, X-class
+            cmeAlerts: true,
+            alertSound: false,
+            browserNotifications: false
+        },
+        data: {
+            refreshInterval: 5, // minutes (1, 5, 15, 30, manual)
+            sourcePriority: 'CelesTrak',
+            tleAgeWarning: 24, // hours
+            nasaApiKey: '',
+            showTimestamps: true
+        },
+        layout: {
+            defaultPage: 'home',
+            leftSidebar: 'show', // show, hide, auto
+            defaultGlobeView: 'full', // full, leo, solar
+            compactMode: false,
+            panels: {
+                collisionRisk: true,
+                neoWatch: true,
+                closeApproaches: true,
+                orbitChart: true,
+                spaceWeather: true
+            }
+        },
+        preferences: {
+            homeLocation: 'Houston, TX',
+            defaultLaunchSite: 'KSC',
+            distanceUnits: 'km', // km, miles, AU
+            velocityUnits: 'km/s', // km/s, mph, km/h
+            timeFormat: 'UTC', // 12hr, 24hr, UTC
+            dateFormat: 'ISO' // DD/MM/YYYY, MM/DD/YYYY, ISO
+        },
+        watchlist: {
+            trackedObjects: []
+        }
+    },
+    updateAppSetting: (category, key, value) => set((state) => ({
+        appSettings: {
+            ...state.appSettings,
+            [category]: {
+                ...state.appSettings[category],
+                [key]: value
+            }
+        }
+    })),
+    updateAppCategory: (category, newValues) => set((state) => ({
+        appSettings: {
+            ...state.appSettings,
+            [category]: {
+                ...state.appSettings[category],
+                ...newValues
+            }
+        }
+    })),
+    clearWatchlist: () => set((state) => ({
+        appSettings: {
+            ...state.appSettings,
+            watchlist: { trackedObjects: [] }
+        }
+    })),
 }));
 
 export default useAppStore;

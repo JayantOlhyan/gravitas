@@ -12,6 +12,8 @@ function EarthSphere() {
     const earthRef = useRef();
     const cloudsRef = useRef();
 
+    const { globe } = useAppStore(state => state.appSettings);
+
     const [daymap, clouds, spec] = useTexture([
         '/textures/earth_daymap.jpg',
         '/textures/earth_clouds.jpg',
@@ -19,8 +21,10 @@ function EarthSphere() {
     ]);
 
     useFrame(() => {
-        if (earthRef.current) earthRef.current.rotation.y += 0.0005;
-        if (cloudsRef.current) cloudsRef.current.rotation.y += 0.0008;
+        if (globe.autoRotation) {
+            if (earthRef.current) earthRef.current.rotation.y += 0.0005 * globe.rotationSpeed;
+            if (cloudsRef.current) cloudsRef.current.rotation.y += 0.0008 * globe.rotationSpeed;
+        }
     });
 
     return (
@@ -36,29 +40,38 @@ function EarthSphere() {
                 />
             </mesh>
             {/* Clouds */}
-            <mesh ref={cloudsRef}>
-                <sphereGeometry args={[1.005, 32, 32]} />
-                <meshPhongMaterial
-                    map={clouds}
-                    transparent={true}
-                    opacity={0.4}
-                    blending={THREE.AdditiveBlending}
-                    depthWrite={false}
-                />
-            </mesh>
-        </group>
+            {
+                globe.cloudLayer && (
+                    <mesh ref={cloudsRef}>
+                        <sphereGeometry args={[1.005, 32, 32]} />
+                        <meshPhongMaterial
+                            map={clouds}
+                            transparent={true}
+                            opacity={0.4}
+                            blending={THREE.AdditiveBlending}
+                            depthWrite={false}
+                        />
+                    </mesh>
+                )
+            }
+        </group >
     );
 }
 
 export default function EarthGlobe() {
-    const { data: debrisData } = useDebrisList(1000); // Fetch top 1000 for render speed
+    const { globe, display } = useAppStore(state => state.appSettings);
+    // Parse max rendering option
+    const limit = globe.maxOrbitsRendered === 'all' ? 10000 : parseInt(globe.maxOrbitsRendered, 10);
+
+    // Debris fetch count based on max rendered setting
+    const { data: debrisData } = useDebrisList(limit > 2000 ? limit : 2000);
     const selectedObject = useAppStore(state => state.selectedObject);
 
     const topRiskData = useMemo(() => {
         if (!debrisData || !Array.isArray(debrisData)) return [];
         const sorted = [...debrisData].sort((a, b) => (b.velocity || 0) - (a.velocity || 0));
-        return sorted.slice(0, 50);
-    }, [debrisData]);
+        return sorted.slice(0, Math.min(50, limit));
+    }, [debrisData, limit]);
 
     return (
         <div className="w-full h-full relative" aria-label="Interactive 3D Earth Globe showing orbital debris and asteroid positions">
@@ -72,14 +85,14 @@ export default function EarthGlobe() {
                     <EarthSphere />
                 </Suspense>
 
-                {Array.isArray(debrisData) && <DebrisMarker debrisData={debrisData} />}
+                {globe.showDebrisMarkers && Array.isArray(debrisData) && <DebrisMarker debrisData={debrisData} />}
 
-                {topRiskData.map(obj => (
-                    <OrbitPath key={`path-${obj.id}`} debrisObj={obj} isSelected={selectedObject?.id === obj.id} />
+                {globe.showOrbitalPaths && topRiskData.map(obj => (
+                    <OrbitPath key={`path-${obj.id}`} debrisObj={obj} isSelected={selectedObject?.id === obj.id} colorMode={globe.orbitColorMode} />
                 ))}
 
                 {selectedObject && !topRiskData.find(x => x.id === selectedObject.id) && (
-                    <OrbitPath debrisObj={selectedObject} isSelected />
+                    <OrbitPath debrisObj={selectedObject} isSelected colorMode={globe.orbitColorMode} />
                 )}
 
                 <GlobeControls />
