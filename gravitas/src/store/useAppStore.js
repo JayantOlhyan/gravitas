@@ -34,6 +34,20 @@ const useAppStore = create((set, get) => ({
     setDetailPopupOpen: (v) => set({ detailPopupOpen: v }),
     sidebarOpen: true,            // Mobile sidebar toggle
     setSidebarOpen: (v) => set({ sidebarOpen: v }),
+    profileModalOpen: false,      // Profile editing modal toggle
+    setProfileModalOpen: (v) => set({ profileModalOpen: v }),
+
+    // User Profile
+    userProfile: {
+        name: 'Jayant Olhyan',
+        initials: 'JO',
+        role: 'Admin',
+        department: 'Orbital Def. Command',
+        avatarUrl: ''
+    },
+    setUserProfile: (profile) => set((state) => ({
+        userProfile: { ...state.userProfile, ...profile }
+    })),
 }));
 
 export default useAppStore;

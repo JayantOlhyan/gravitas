@@ -14,6 +14,8 @@ const TABS = [
 export default function Navbar() {
     const location = useLocation();
     const hasUnreadAlerts = useAppStore(state => state.hasUnreadAlerts);
+    const setProfileModalOpen = useAppStore(state => state.setProfileModalOpen);
+    const userProfile = useAppStore(state => state.userProfile);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
@@ -121,22 +123,35 @@ export default function Navbar() {
                             onClick={() => { setProfileOpen(!profileOpen); setSettingsOpen(false); }}
                             className={`h-9 w-9 rounded-full overflow-hidden flex items-center justify-center cursor-pointer transition-colors shadow-[0_0_10px_rgba(0,212,255,0.1)] ${profileOpen ? 'bg-[var(--accent-cyan)] border-transparent' : 'bg-[rgba(0,212,255,0.1)] border border-[rgba(0,212,255,0.3)] hover:bg-[rgba(0,212,255,0.2)]'}`}
                         >
-                            <span className={`text-xs font-bold select-none ${profileOpen ? 'text-[var(--bg-primary)]' : 'text-[var(--accent-cyan)]'}`}>JO</span>
+                            {userProfile.avatarUrl ? (
+                                <img src={userProfile.avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
+                            ) : (
+                                <span className={`text-xs font-bold select-none ${profileOpen ? 'text-[var(--bg-primary)]' : 'text-[var(--accent-cyan)]'}`}>
+                                    {userProfile.initials}
+                                </span>
+                            )}
                         </div>
 
                         {profileOpen && (
                             <div className="absolute top-12 right-0 w-48 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col z-[100] animate-in fade-in slide-in-from-top-2 duration-200">
                                 <div className="px-4 py-3 border-b border-[var(--border-subtle)] flex items-center gap-3">
-                                    <div className="h-10 w-10 rounded-full bg-[var(--accent-cyan)] flex items-center justify-center">
-                                        <span className="text-[var(--bg-primary)] font-bold text-sm">JO</span>
+                                    <div className="h-10 w-10 overflow-hidden rounded-full bg-[var(--accent-cyan)] flex items-center justify-center">
+                                        {userProfile.avatarUrl ? (
+                                            <img src={userProfile.avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
+                                        ) : (
+                                            <span className="text-[var(--bg-primary)] font-bold text-sm">{userProfile.initials}</span>
+                                        )}
                                     </div>
                                     <div className="flex flex-col">
-                                        <span className="text-white font-bold text-sm">Jayant Olhyan</span>
-                                        <span className="text-[10px] text-[var(--accent-cyan)] uppercase tracking-widest">Admin</span>
+                                        <span className="text-white font-bold text-sm truncate max-w-[100px]">{userProfile.name}</span>
+                                        <span className="text-[10px] text-[var(--accent-cyan)] uppercase tracking-widest truncate max-w-[100px]">{userProfile.role}</span>
                                     </div>
                                 </div>
                                 <div className="flex flex-col p-2">
-                                    <button className="flex items-center justify-between px-3 py-2 rounded-lg text-[var(--text-secondary)] hover:bg-[rgba(255,255,255,0.05)] hover:text-white transition-colors text-sm text-left">
+                                    <button
+                                        onClick={() => { setProfileModalOpen(true); setProfileOpen(false); }}
+                                        className="flex items-center justify-between px-3 py-2 rounded-lg text-[var(--text-secondary)] hover:bg-[rgba(255,255,255,0.05)] hover:text-white transition-colors text-sm text-left"
+                                    >
                                         <div className="flex items-center gap-3"><User className="w-4 h-4" /> My Profile</div>
                                         <ChevronRight className="w-3 h-3 opacity-50" />
                                     </button>
