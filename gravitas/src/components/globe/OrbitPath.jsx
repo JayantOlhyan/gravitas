@@ -20,6 +20,7 @@ export default function OrbitPath({ debrisObj, isSelected = false, colorMode = '
     }, [debrisObj.alt]);
 
     let color = '#1A6EBD'; // standard blue
+    let opacity = 0.4;
 
     if (colorMode === 'type') {
         switch (debrisObj.orbitType) {
@@ -40,21 +41,40 @@ export default function OrbitPath({ debrisObj, isSelected = false, colorMode = '
         score += ((debrisObj.velocity || 7) / 10);
         score += ((debrisObj.eccentricity || 0) * 10);
 
-        if (score >= 8) color = '#FF3D00';
-        else if (score >= 6) color = '#FF6B2B';
-        else if (score >= 4) color = '#FFD600';
+        if (score >= 8) { color = '#FF3D00'; opacity = 0.9; }
+        else if (score >= 6) { color = '#FF6B2B'; opacity = 0.9; }
+        else if (score >= 4) { color = '#FFD600'; opacity = 0.8; }
+        else if (debrisObj.orbitType === 'NEO') { color = '#00D4FF'; opacity = 0.8; }
+        else { color = '#1A6EBD'; opacity = 0.4; } // Standard debris
     }
 
-    if (isSelected) color = '#00FFCC'; // Brighter Cyan highlight when selected
+    if (isSelected) { color = '#00FFCC'; opacity = 1.0; } // Brighter Cyan highlight when selected
 
     return (
         <group rotation={[0, 0, (debrisObj.inclination || 0) * (Math.PI / 180)]}>
+            {/* Fake Glow using a much thicker, highly transparent line */}
             <Line
                 points={points}
                 color={color}
-                lineWidth={1}
+                lineWidth={6}
                 transparent
-                opacity={isSelected ? 1.0 : 0.4}
+                opacity={isSelected ? 0.3 : opacity * 0.15}
+                depthWrite={false}
+                toneMapped={false}
+            />
+            {/* Core Line */}
+            <Line
+                points={points}
+                color={color}
+                lineWidth={2}
+                transparent
+                opacity={opacity}
+                depthWrite={false}
+                toneMapped={false}
+                dashed={debrisObj.orbitType === 'NEO'}
+                dashScale={50}
+                dashSize={1}
+                gapSize={1}
             />
         </group>
     );
